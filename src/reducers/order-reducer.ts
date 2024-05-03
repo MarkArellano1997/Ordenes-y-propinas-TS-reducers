@@ -1,11 +1,10 @@
-import { OrderItem } from './../types/index';
 import { MenuItem, OrderItem } from "../types";
 
 export type OrderActions =
     { type: 'add-item', payload: { item: MenuItem } } |
     { type: 'remove-item', payload: { id: MenuItem['id'] } } |
     { type: 'place-order' } |
-    { type: 'add.tip', payload: { value: number } }
+    { type: 'add-tip', payload: { value: number } }
 
 export type OrderState = {
     order: OrderItem[],
@@ -43,20 +42,27 @@ export const orderReducer = (
     }
 
     if (action.type === 'remove-item') {
+        const updatedOrder = state.order.filter(item => item.id !== action.payload.id)
         return {
-            ...state
+            ...state,
+            order: updatedOrder
         }
     }
 
     if (action.type === 'place-order') {
         return {
-            ...state
+            ...state,
+            order:[],
+            tip:0
+
         }
     }
 
-    if (action.type === 'add.tip') {
+    if (action.type === 'add-tip') {
+        const tip = action.payload.value
         return {
-            ...state
+            ...state,
+            tip
         }
     }
 
